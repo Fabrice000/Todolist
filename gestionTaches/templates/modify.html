@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% block generiquePage %} Modification {% endblock generiquePage %}
+{% block headerContent %}
+<form action="" method="post">
+    {% csrf_token %}
+    <center class="fixed-top py-1" style="background-color: white;">
+        <h1 class="shadow text-dark-emphasis fw-bolder" style="text-shadow:10px 10px 7px black;">Todolist</h1>
+        <hr size="5">
+    </center>
+    <div class="d-flex py-5 px-3 my-5 justify-content-center ">
+        <span class="mx-3 fw-semibold text-sm-start">Todo:</span>
+
+        {{ form.as_p }}
+        <input type="submit" value="Ajouter" class="btn btn-sm btn-md btn-outline-success d-flex h-25 mx-3">
+    </div>
+
+    <!-- <div class="d-flex p-4   justify-content-center">
+            <label class="list-group-item d-flex gap-2">
+                <input class="form-check-input flex-shrink-0" type="checkbox" value="" checked>
+                <input type="text" name="name" id="name" placeholder="todo...." class="form-control">
+            </label>
+            <input type="button" value="Ajouter" class="btn btn-success p-2">
+        </div> -->
+</form>
+
+
+{% endblock headerContent %}
+{% block content %}
+{% for tache in taches_no_termined %}
+<div class="d-flex flex-lg-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
+    <div class="list-group d-flex flex-md-row" id="Taches">
+        <form action="" method="post" id="checkedForm" style="font-style: italic;">
+            {% csrf_token %}
+            <label class="list-group-item d-flex gap-3" style="width: 500px;">
+
+                <div class="container-fluid container-sm container-md d-flex">
+                    <input type="checkbox" class="checkbox-class" data-element-id="{{ tache.id }}" {% if tache.finish %}
+                        checked {% endif %}>
+                    <span class="pt-1 form-checked-content px-3 " id="task">
+                        <strong id="{{ tache.name }}" {% if tache.finish %}
+                            class="text-decoration-line-through text-opacity-50" {% endif %}>{{ tache.name }}
+                        </strong>
+                        <small style="margin-left: 5px;" >
+                            {% if tache.categories == "Programmation" %}
+                            <!-- des icon de programme -->
+                                <i class="fa-regular fa-calendar"></i>
+                            {% else %}
+                            <!-- des icon de d'un autre -->
+                                <i class="fa-regular fa-flag " style="color: green;"></i>
+                            {% endif %}
+                        </small>
+                        <br>
+                        <small >{{ tache.description }}</small>
+                        <small class="d-block text-body-secondary">
+                            <i class="fa-regular fa-calendar"></i>
+                            {{ tache.duration }}
+                            {% if tache.priority == "normal"  %}
+                            <i class="fa-regular fa-flag " style="color: green; margin-left: 5px;"></i>
+                            {% elif tache.priority == "low" %}
+                            <i class="fa-regular fa-flag " style="color: gray;margin-left: 5px;"></i>
+                            {% else %}
+                            <i class="fa-regular fa-flag " style="color: red;margin-left: 5px;"></i>
+                            {% endif %}
+                        </small>
+                    </span>
+                    
+                </div>
+                <div>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        aria-expanded="false">Options</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="modify/{{ tache.id }}">Modifier</a></li>
+                        <li><a class="dropdown-item" href="delete-task/{{ tache.id }}">Supprimer</a></li>
+                    </ul>
+                </div>
+            </label>
+        </form>
+    </div>
+</div>
+{% empty %}
+<h1 style="text-align: center;">Vous avez quartier libre??</h1>
+<h6 style="text-align: center;"><em>Prêt pour de nouvelles taches? Ecrit dans l'espace puis appuyer sur la touche
+        ajouter pour créer une nouvelle tache!</em></h6>
+{% endfor %}
+{% for tache in taches_termined %}
+<center>
+    <h1 class="text-dark-emphasis">Terminées</h1>
+</center>
+<div class="d-flex flex-lg-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
+    <div class="list-group d-flex flex-md-row" id="Taches">
+        <form action="" method="post" id="checkedForm" style="font-style: italic;">
+            {% csrf_token %}
+            <label class="list-group-item d-flex gap-3" style="width: 500px;">
+
+                <div class="container-fluid container-sm container-md d-flex">
+                    <input type="checkbox" class="checkbox-class" data-element-id="{{ tache.id }}" {% if tache.finish %}
+                        checked {% endif %}>
+                    <span class="pt-1 form-checked-content px-3 " id="task">
+                        <strong id="{{ tache.name }}" class="text-decoration-line-through" style="opacity: 0.5;">{{ tache.name }}
+                        </strong>
+                        <small style="margin-left: 5px;" >
+                            {% if tache.categories == "Programmation" %}
+                            <!-- des icon de programme -->
+                                <i class="fa-regular fa-calendar"></i>
+                            {% else %}
+                            <!-- des icon de d'un autre -->
+                                <i class="fa-regular fa-flag " style="color: green;"></i>
+                            {% endif %}
+                        </small>
+                        <br>
+                        <small style="opacity: 0.5;" >{{ tache.description }}</small>
+                        <small class="d-block text-body-secondary">
+                            <i class="fa-regular fa-calendar"></i>
+                            {{ tache.duration }}
+                            {% if tache.priority == "normal"  %}
+                            <i class="fa-regular fa-flag " style="color: green; margin-left: 5px;"></i>
+                            {% elif tache.priority == "low" %}
+                            <i class="fa-regular fa-flag " style="color: gray;margin-left: 5px;"></i>
+                            {% else %}
+                            <i class="fa-regular fa-flag " style="color: red;margin-left: 5px;"></i>
+                            {% endif %}
+                        </small>
+                    </span>
+                    
+                </div>
+                <div>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        aria-expanded="false">Options</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="modify/{{ tache.id }}">Modifier</a></li>
+                        <li><a class="dropdown-item" href="delete-task/{{ tache.id }}">Supprimer</a></li>
+                    </ul>
+                </div>
+            </label>
+        </form>
+    </div>
+</div>{% endfor %}
+<script type="text/javascript">
+    // chat gpt
+    // Assurez-vous que jQuery est inclus dans votre page HTML
+
+    $(document).ready(function () {
+        $('.checkbox-class').change(function () {
+            var element_id = $(this).data('element-id');
+            var is_checked = $(this).is(':checked');
+            console.log(is_checked);
+            console.log(element_id)
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/changer_etat_element/',
+                data: {
+                    'element_id': element_id,
+                    'is_checked': is_checked,
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.success) {
+                        console.log('État de l\'élément mis à jour avec succès.');
+                    } else {
+                        console.log('Une erreur s\'est produite lors de la mise à jour de l\'état de l\'élément.');
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log('Une erreur s\'est produite.');
+                }
+            });
+        });
+    });
+
+</script>
+
+
+{% endblock content %}
+
+
+
+<!-- 
+<tr>
+    <th scope="row">
+    </th>
+    <td>{% if tache.finish %}
+        <input type="checkbox" name="statut" id="statut" class="form-check-input" checked>
+        {% else %}
+        <input type="checkbox" name="statut" id="statut" class="form-check-input" >
+        {% endif %}
+    </td>
+    <td> 
+        {% if tache.finish %}
+        <em class="text-decoration-line-through text-opacity-50 ">{{ tache.name }}</em>
+        {% else %}
+        <strong>{{ tache.name }}</strong>
+        {% endif %}</td>
+</tr> -->
